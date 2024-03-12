@@ -1,5 +1,6 @@
 package com.example.sparta_personal2_kiosk
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -88,7 +89,18 @@ class FoodsRecyclerViewAdapter(private val itemList: List<FoodsData>) :
                     image2.visibility = View.VISIBLE
                     text2.visibility = View.VISIBLE
                 }
+            }
 
+
+            image1.setOnClickListener {
+                val intent = Intent(itemView.context, MainActivity::class.java)
+                intent.putExtra("selectFood", item.foodName[0])
+            }
+            image2.setOnClickListener {
+                BasketData(item.foodName[1], (item.foodPrice[1].toDouble()*1000).toInt(), 1)
+            }
+            image3.setOnClickListener {
+                BasketData(item.foodName[2], (item.foodPrice[2].toDouble()*1000).toInt(), 1)
             }
         }
 
@@ -96,5 +108,6 @@ class FoodsRecyclerViewAdapter(private val itemList: List<FoodsData>) :
             if (s == "Float") return "float0"
             return s.filter { it.isDigit() || it.isLetter() || it.isWhitespace()}.map { it.lowercase() }.joinToString("").replace("\\s+".toRegex(), " ").replace(" ", "_")
         }
+
     }
 }

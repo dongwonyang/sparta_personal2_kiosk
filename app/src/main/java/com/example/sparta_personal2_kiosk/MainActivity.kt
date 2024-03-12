@@ -4,6 +4,8 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 
 class MainActivity : AppCompatActivity() {
@@ -38,5 +40,33 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        val textType1 = findViewById<TextView>(R.id.textView1)
+        val textType2 = findViewById<TextView>(R.id.textView2)
+        val textType3 = findViewById<TextView>(R.id.textView3)
+        val textType4 = findViewById<TextView>(R.id.textView4)
+
+        moveToButton(textType1, 0)
+        moveToButton(textType2, 1)
+        moveToButton(textType3, 2)
+        moveToButton(textType4, 3)
+
+        val basketData = mutableListOf<BasketData>()
+
+        basketData.add(BasketData("food", 7000, 1))
+        var foodName = intent.getStringExtra("selectFood").toString()
+        basketData.add(BasketData(foodName, 1, 1))
+
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView_basket)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = BasketRecyclerviewAdapter(basketData.toList())
+
+
+    }
+
+
+    fun moveToButton(moveToPageButton: TextView, page: Int){
+        moveToPageButton.setOnClickListener {
+            viewPager.currentItem = page
+        }
     }
 }
