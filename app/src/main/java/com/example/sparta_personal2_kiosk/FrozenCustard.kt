@@ -31,6 +31,7 @@ class FrozenCustard : Foods {
 
     override var longNameLength = 0
     override var foodsNumberOfTypes = 0
+    override val type = "FrozenCustard"
 
     init {
         foodsNumberOfTypes = menuList.size

@@ -55,6 +55,7 @@ class Drinks : Foods{
 
     override var longNameLength = 0
     override var foodsNumberOfTypes = 0
+    override val type = "Drinks"
 
     init {
         foodsNumberOfTypes = menuList.size

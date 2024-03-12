@@ -22,7 +22,7 @@ fun main() {
 
     var userInfo = UserInfo()
 
-    while (true) {
+    val thread1 = thread{while (true) {
         if (printMainBool && selectedDetailedOption == 0) {
             println()
             printMenu.printMain()
@@ -106,6 +106,8 @@ fun main() {
                             println("결제 금액이 부족합니다.")
                             break
                         }
+                        val currentTime = LocalTime.now()
+                        println("현재 시간은 ${currentTime.hour}:${currentTime.minute}")
                         println("결제 완료. ${userInfo.money - userInfo.totalPrice}원을 반환합니다.")
                         selectedDetailedOption = 0
                         printMainBool = true
@@ -124,6 +126,13 @@ fun main() {
                     }
                 }
             }
+        }
+    }}
+
+    thread {
+        while(thread1.isAlive()){
+            println("주문 대기 수는 5입니다.")
+            Thread.sleep(5000)
         }
     }
 }

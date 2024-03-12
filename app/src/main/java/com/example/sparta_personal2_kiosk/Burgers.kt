@@ -34,7 +34,7 @@ class Burgers : Foods {
     }
     override var longNameLength = 0
     override var foodsNumberOfTypes = 0
-
+    override val type = "Burgers"
     init {
         foodsNumberOfTypes = menuList.size
         menuList.forEach { it ->
