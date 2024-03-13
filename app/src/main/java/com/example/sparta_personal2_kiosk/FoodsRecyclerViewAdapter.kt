@@ -1,16 +1,19 @@
 package com.example.sparta_personal2_kiosk
 
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 
 class FoodsRecyclerViewAdapter(private val itemList: List<FoodsData>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var bundle = Bundle()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_foods, parent, false)
@@ -93,14 +96,19 @@ class FoodsRecyclerViewAdapter(private val itemList: List<FoodsData>) :
 
 
             image1.setOnClickListener {
-                val intent = Intent(itemView.context, MainActivity::class.java)
-                intent.putExtra("selectFood", item.foodName[0])
+                BasketItems.basketDataList.add(BasketData(item.foodName[0], (item.foodPrice[0].toDouble()*1000).toInt(), 1))
+                BasketItems.controlBool = true
+                BasketItems.basketUpdateChannel.trySend(Unit)
             }
             image2.setOnClickListener {
-                BasketData(item.foodName[1], (item.foodPrice[1].toDouble()*1000).toInt(), 1)
+                BasketItems.basketDataList.add(BasketData(item.foodName[1], (item.foodPrice[1].toDouble()*1000).toInt(), 1))
+                BasketItems.controlBool = true
+                BasketItems.basketUpdateChannel.trySend(Unit)
             }
             image3.setOnClickListener {
-                BasketData(item.foodName[2], (item.foodPrice[2].toDouble()*1000).toInt(), 1)
+                BasketItems.basketDataList.add(BasketData(item.foodName[2], (item.foodPrice[2].toDouble()*1000).toInt(), 1))
+                BasketItems.controlBool = true
+                BasketItems.basketUpdateChannel.trySend(Unit)
             }
         }
 
@@ -108,6 +116,5 @@ class FoodsRecyclerViewAdapter(private val itemList: List<FoodsData>) :
             if (s == "Float") return "float0"
             return s.filter { it.isDigit() || it.isLetter() || it.isWhitespace()}.map { it.lowercase() }.joinToString("").replace("\\s+".toRegex(), " ").replace(" ", "_")
         }
-
     }
 }

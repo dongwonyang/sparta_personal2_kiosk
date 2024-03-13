@@ -3,13 +3,19 @@ package com.example.sparta_personal2_kiosk
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import android.app.Dialog
+import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewPager : ViewPager2
+    lateinit var adapter : BasketRecyclerviewAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -50,23 +56,84 @@ class MainActivity : AppCompatActivity() {
         moveToButton(textType3, 2)
         moveToButton(textType4, 3)
 
-        val basketData = mutableListOf<BasketData>()
-
-        basketData.add(BasketData("food", 7000, 1))
-        var foodName = intent.getStringExtra("selectFood").toString()
-        basketData.add(BasketData(foodName, 1, 1))
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView_basket)
+        adapter = BasketRecyclerviewAdapter(BasketItems.basketDataList.toList())
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = BasketRecyclerviewAdapter(basketData.toList())
+        recyclerView.adapter = adapter
 
 
+
+        val paymentButton = findViewById<Button>(R.id.button_payment)
+        val clearButton = findViewById<Button>(R.id.button_clear)
+
+        paymentButton.setOnClickListener {
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.popup_payment)
+            val textviewBill = dialog.findViewById<TextView>(R.id.textview_bill)
+            textviewBill.text = BasketItems.totalPrice()
+            val buttonCash = dialog.findViewById<Button>(R.id.button_cash)
+            buttonCash.setOnClickListener {
+
+                dialog.dismiss()
+            }
+            val buttonCard = dialog.findViewById<Button>(R.id.button_card)
+            buttonCard.setOnClickListener {
+
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+        clearButton.setOnClickListener {
+            BasketItems.basketDataList.clear()
+            BasketItems.basketUpdateChannel.trySend(Unit)
+        }
+
+
+        CoroutineScope(Dispatchers.Main).launch {
+//            while (true) {
+//                if (BasketItems.controlBool) {
+//                    adapter = BasketRecyclerviewAdapter(BasketItems.basketDataList.toList())
+//                    recyclerView.adapter = adapter
+//                    BasketItems.controlBool = false
+//                }
+//                delay(1000)
+//            }
+            for (event in BasketItems.basketUpdateChannel) {
+                // 이벤트가 발생할 때만 실행되는 부분
+                adapter = BasketRecyclerviewAdapter(BasketItems.basketDataList.toList())
+                recyclerView.adapter = adapter
+            }
+        }
     }
 
 
     fun moveToButton(moveToPageButton: TextView, page: Int){
         moveToPageButton.setOnClickListener {
             viewPager.currentItem = page
+        }
+    }
+}
+
+
+class BasketItems {
+    companion object {
+        val basketDataList = mutableListOf<BasketData>()
+        val basketUpdateChannel = Channel<Unit>()
+        var controlBool = false
+
+        fun totalPrice() : String{
+            var answer = ""
+            var totalPrice = 0
+            var tempPrice = 0
+            for (basketData in basketDataList) {
+                tempPrice = basketData.foodPrice * basketData.numOfFood
+                answer += "${basketData.foodPrice}x${basketData.numOfFood}=${tempPrice}\n"
+                totalPrice += tempPrice
+            }
+            answer += "TotalPrice = $totalPrice"
+            return answer
         }
     }
 }

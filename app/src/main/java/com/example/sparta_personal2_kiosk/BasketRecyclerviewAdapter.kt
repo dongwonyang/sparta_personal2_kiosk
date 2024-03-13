@@ -46,7 +46,12 @@ class BasketRecyclerviewAdapter (private val itemList: List<BasketData>) :
             buttonSub.setOnClickListener {
                 item.numOfFood--
                 foodNum.text = item.numOfFood.toString()
-                if(item.numOfFood == 0) itemView.findViewById<ConstraintLayout>(R.id.constraint_basket_item).visibility = View.GONE
+                if(item.numOfFood == 0) {
+                    itemView.findViewById<ConstraintLayout>(R.id.constraint_basket_item).visibility = View.GONE
+                    BasketItems.basketDataList.remove(BasketItems.basketDataList.first { it.numOfFood == 0 })
+                    BasketItems.controlBool = true
+                    BasketItems.basketUpdateChannel.trySend(Unit)
+                }
             }
         }
     }
