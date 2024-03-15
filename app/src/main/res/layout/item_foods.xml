@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/image_item_food1"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/image_item_food2"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="5dp"/>
+
+    <ImageView
+        android:id="@+id/image_item_food2"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        app:layout_constraintStart_toEndOf="@id/image_item_food1"
+        app:layout_constraintEnd_toStartOf="@id/image_item_food3"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="5dp"/>
+
+    <ImageView
+        android:id="@+id/image_item_food3"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/image_item_food2"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="5dp"/>
+
+    <TextView
+        android:id="@+id/text_item_foodname1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="food1\nW 3.9"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/image_item_food1"
+        app:layout_constraintStart_toStartOf="@id/image_item_food1"
+        app:layout_constraintEnd_toEndOf="@id/image_item_food1"/>
+
+    <TextView
+        android:id="@+id/text_item_foodname2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="food1\nW 3.9"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/image_item_food2"
+        app:layout_constraintStart_toStartOf="@id/image_item_food2"
+        app:layout_constraintEnd_toEndOf="@id/image_item_food2"/>
+
+    <TextView
+        android:id="@+id/text_item_foodname3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="food1\nW 3.9"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/image_item_food3"
+        app:layout_constraintStart_toStartOf="@id/image_item_food3"
+        app:layout_constraintEnd_toEndOf="@id/image_item_food3"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
